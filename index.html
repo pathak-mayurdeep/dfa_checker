@@ -24,8 +24,24 @@
     function proceed(){
       var alph = document.getElementById('alph').value;
       var alphabets = alph.split(",");
-  //    var aplh_star = combinator (alphabets);
-  //    console.log(alph_star);
+
+  //   var aplh_star = combinator (alph);
+      var alph_star = [];
+      var loop = function (start,depth,prefix) {
+          for(var i=start; i<alph.length; i++) {
+              var next = prefix+alph[i];
+              if (depth > 0)
+                  loop(i+1,depth-1,next);
+              else
+                  alph_star.push(next);
+          }
+      }
+      for(var i=0; i<alph.length; i++)  {
+          loop(0,i,'');
+      }
+
+      console.log(alph_star);
+
       var no_state = document.getElementById('no_state').value;
       var str = "Enter transition value(or select no) -- <br><br>";
       for(i=0;i<no_state;i++){
@@ -33,7 +49,7 @@
           str+= "between q"+i+" and q"+j+" : <select id='"+i+j+"' >";
           str+= "<option value=''>No</option>";
       //    alph_star.forEach(function(element) {
-          alphabets.forEach(function(element) {
+          alph_star.forEach(function(element) {
             str+= "<option value='"+element+"'>"+element+"</option>";
           });
           str+="</select>&nbsp;&nbsp;&nbsp;";
@@ -74,10 +90,12 @@
         console.log("forEach "+cur_state);
         for(i=0;i<no_state;i++){
 
-            if(states[cur_state][i]==element){
+      //      if(states[cur_state][i]==element){
+          if (states[cur_state][i].indexOf(element)>=0){
               cur_state =i;break;
               console.log(cur_state);
             }
+            console.log(states[cur_state][i].indexOf(element)>=0);
           }
       });
 
@@ -89,14 +107,8 @@
       }
     }
 
-     function combinator (s) {
-       list_of_strings = new Array();
-       for(i=0;i<s.length;i++) {
-           for(j=i+1;j<s.length+1;j++) {
-               list_of_strings.push(s.slice(i, j));
-           }
-       }
-       return list_of_strings;
-    }
+
+
+
   </script>
 </html>
